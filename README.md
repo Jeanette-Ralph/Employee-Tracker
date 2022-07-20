@@ -33,6 +33,6 @@ If you have any further questions please reach out.
 
 Email: jeanette.k.ralph@gmail.com 
 
-GitHub link: [Note Taker Repository](https://github.com/Jeanette-Ralph/Employee-Tracker)
+GitHub link: [Employee Tracker Repository](https://github.com/Jeanette-Ralph/Employee-Tracker)
 
 GitHub username: [Jeanette-Ralph ](https://github.com/Jeanette-Ralph)
