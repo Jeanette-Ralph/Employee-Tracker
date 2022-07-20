@@ -1,11 +1,11 @@
 INSERT INTO department(department_id,department_name) 
 VALUES 
-(1,'Engineering'), 
-(2,'Finance'),
-(3,'Legal'),
-(4,'Sales')
+('Engineering'), 
+('Finance'),
+('Legal'),
+('Sales')
 
-INSERT INTO position(role_id,title,salary)
+INSERT INTO role(role_id,title,salary)
 VALUES 
 (1, 'Sales Lead', 90000),
 (2, 'Sales Person', 85000),
