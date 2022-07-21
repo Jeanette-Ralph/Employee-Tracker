@@ -24,4 +24,3 @@ VALUES
 (5, 'Nisha', 'Singh', 5, null),
 (6, 'Harpreet', 'Kaur', 6, null)
 
-
