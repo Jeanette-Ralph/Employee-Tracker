@@ -20,7 +20,7 @@ VALUES
 ('James', 'Ralph', 1, 5),
 ('Jeanette', 'Ralph', 2, 6),
 ('Frank', 'Ralph', 3, null),
-('Jasbir', 'Ralph', 4, 5);
+('Jasbir', 'Ralph', 4, 5),
 ('Nisha', 'Singh', 5, 5),
 ('Harpreet', 'Kaur', 6, 6);
 

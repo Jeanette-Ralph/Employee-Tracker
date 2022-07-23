@@ -69,41 +69,48 @@ const promptMenu = () => {
                 updateEmployee();
                 break;
             default:
-                console.log('All done!')
+                promptMenu();
                 break;
-        }
-    })
+        };
+    });
 };
 
 // functions just for displaying info
-
 const viewDepartments = (response) => {
     console.log('Viewing all departments.');
 
-    return this.db.promise().query(
-        'SELECT * FROM department'
-    )
+    db.query(
+        'SELECT * FROM department ',
+        function (err, results) {
+            console.table(results);
+        }
+    );
 };
 
 const viewRoles = () => {
     console.log('Viewing all roles.');
 
-    db.promise().query(
-        'SELECT * FROM role'
-    )
+    db.query(
+        'SELECT * FROM role ',
+        function (err, results) {
+            console.table(results);
+        }
+    );
 };
 
 const viewEmployees = () => {
     console.log('Viewing all employees.');
 
-    db.promise().query(
-        'SELECT * FROM employee'
-    )
+    db.query(
+        'SELECT * FROM employee ',
+        function (err, results) {
+            console.table(results);
+        }
+    );
 };
 
 
 // functions for inserting values into the table
-
 const addDepartment = (response) => {
     console.log('Add a department.');
     inquirer.prompt([
@@ -113,13 +120,13 @@ const addDepartment = (response) => {
             name: 'deptName'
         }
     ]).then(
-        db.query(`INSERT INTO department (department_name) VALUES ?`, [response.deptName], (err, result) => {
-            if (err) {
-                console.log(err);
+        db.query(
+            'INSERT INTO department (department_name) VALUES (?)', [response.deptName],
+            function (err, results) {
+                console.table(results);
             }
-            console.log(result);
-        })
-    )
+        )
+    );
 };
 
 const addRole = (response) => {
@@ -150,13 +157,13 @@ const addRole = (response) => {
             name: 'deptRole'
         },
     ]).then(
-        db.query(`INSERT INTO role ( title, salary,) VALUES ?`, [response.role, response.salary], (err, result) => {
-            if (err) {
-                console.log(err);
+        db.query(
+            'INSERT INTO role (title, salary) VALUES (?,?)', [response.role, response.salary, response.dedeptRole],
+            function (err, results) {
+                console.table(results);
             }
-            console.log(result);
-        })
-    )
+        )
+    );
 };
 
 const addEmployee = (response) => {
@@ -197,7 +204,14 @@ const addEmployee = (response) => {
             ],
             name: 'employeeManager'
         }
-    ])
+    ]).then(
+        db.query(
+            'INSERT INTO employee (title, salary) VALUES (?,?)', [response.role, response.salary],
+            function (err, results) {
+                console.table(results);
+            }
+        )
+    );
 };
 
 // for updating values
