@@ -1,3 +1,4 @@
+const { response } = require('express');
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('console.table');
@@ -85,6 +86,7 @@ const viewDepartments = (response) => {
             console.table(results);
         }
     );
+    promptMenu();
 };
 
 const viewRoles = () => {
@@ -96,6 +98,8 @@ const viewRoles = () => {
             console.table(results);
         }
     );
+
+    promptMenu();
 };
 
 const viewEmployees = () => {
@@ -107,6 +111,8 @@ const viewEmployees = () => {
             console.table(results);
         }
     );
+
+    promptMenu();
 };
 
 
@@ -127,6 +133,8 @@ const addDepartment = (response) => {
             }
         )
     );
+
+    promptMenu();
 };
 
 const addRole = (response) => {
@@ -158,12 +166,14 @@ const addRole = (response) => {
         },
     ]).then(
         db.query(
-            'INSERT INTO role (title, salary) VALUES (?,?)', [response.role, response.salary, response.dedeptRole],
+            'INSERT INTO role (title, salary,department_id ) VALUES (?,?,?)', [response.role, response.salary, response.deptRole],
             function (err, results) {
                 console.table(results);
             }
         )
     );
+
+    promptMenu();
 };
 
 const addEmployee = (response) => {
@@ -206,12 +216,14 @@ const addEmployee = (response) => {
         }
     ]).then(
         db.query(
-            'INSERT INTO employee (title, salary) VALUES (?,?)', [response.role, response.salary],
+            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?)', [response.firstName, response.lastName, response.employeeRole, employeeManager],
             function (err, results) {
                 console.table(results);
             }
         )
     );
+
+    promptMenu();
 };
 
 // for updating values
@@ -224,12 +236,12 @@ const updateEmployee = () => {
                 type: 'list',
                 message: "Which employee's information would you like to update?",
                 choices: [
-                    'James Ralph',
-                    'Jeanette Ralph',
-                    'Frank Ralph',
-                    'Jasbir Ralph',
-                    'Nisha Singh',
-                    'Harpreet Kaur'
+                    'James',
+                    'Jeanette',
+                    'Frank',
+                    'Jasbir',
+                    'Nisha',
+                    'Harpreet'
                 ],
                 name: 'employeeUpdate'
             },
@@ -248,6 +260,15 @@ const updateEmployee = () => {
                 name: 'newEmployeeRole'
             }
         ]
+    ).then(
+        db.query(
+            'UPDATE employee SET first_name = ? WHERE employee_id = ? ', [response.employeeUpdate, response.newEmployeeRole],
+            function (err, results) {
+                console.table(results);
+            }
+        )
     )
+
+    promptMenu();
 };
 
