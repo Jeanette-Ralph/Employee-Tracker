@@ -13,7 +13,7 @@
 MIT ![licence icon](https://img.shields.io/badge/License-MIT-lavender.svg)
 
 ## 🚀 Project Details
-Utilizing Node.js and MySQL I developed a node.js command line application  that allows users to perform queries on a database with tables that contain an employee's information. 
+Utilizing Node.js and MySQL I developed a node.js command line application  that allows users to perform queries on a database with tables that contain an employee's information. [Demo link]( https://drive.google.com/file/d/18DZBZOALBeu5lyjRoxA3ygT-aUR3BYWl/view)
 
 ## 👩‍💻 Usage Information
 This application allows a user to make queries easily within the command line.
