@@ -118,7 +118,7 @@ const viewEmployees = () => {
 
 // functions for inserting values into the table
 const addDepartment = () => {
-    // console.log('Add a department.');
+    console.log('Add a department.');
     inquirer.prompt([
         {
             type: 'input',
@@ -197,68 +197,61 @@ const addEmployee = () => {
         }]).then(res => {
             // get the first name and the last name the user has defined
             const { firstName, lastName } = res;
+            let roleId;
 
-            // fetch all the roles from the db to assign the new employee to a role
+            // query to get all the roles
             db.promise().query('SELECT * FROM role')
                 .then(([rows]) => {
-                    const allRoles = rows;
 
-                    // create the choices from the roles
-                    const roleChoices = allRoles.map(({ role_id, title }) => ({
+                    // create role options
+                    const roleChoices = rows.map(({ role_id, title, }) => ({
                         name: title,
                         value: role_id
                     }));
 
-                    // prompt the user to select a role the employee belongs to
+                    // ask the user which role they want
                     inquirer.prompt({
                         type: 'list',
                         name: 'roleId',
                         message: "What is the employee's role?",
                         choices: roleChoices
-                    }).then(response => {
-                        // create the new role with the role, salary, and departmentId
-                        console.log('response', response);
-                        db.promise().query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?)', [role, salary, response.departmentId])
-                            .then(() => console.log('Role added successfully.'))
-                            .then(() => promptMenu());
+                    }).then(res => {
+                        roleId = res.roleId;
+
+                        // query for all the employees
+                        db.promise().query('SELECT * FROM employee')
+                            .then(([rows]) => {
+                                const allEmployees = rows;
+
+                                // create the choices from the managers
+                                const managerChoices = allEmployees.filter(e => !e.manager_id)
+                                    .map(({ first_name, last_name, employee_id }) => ({
+                                        name: `${first_name} ${last_name}`,
+                                        value: employee_id
+                                    }));
+
+                                inquirer.prompt({
+                                    type: 'list',
+                                    name: 'managerId',
+                                    message: "Who is the employee's manager?",
+                                    choices: managerChoices
+                                }).then(response => {
+                                    const managerId = response.managerId;
+                                    // console.log('response', response);
+                                    console.log('ROLE ID: ', roleId);
+                                    console.log('MANAGER ID: ', managerId);
+                                    db.promise().query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)', [firstName, lastName, roleId, managerId])
+                                        .then(() => console.log('Employee added successfully.'))
+                                        .then(() => promptMenu());
+                                })
+                            })
+
                     })
+
+                    // fetch all the roles from the db to assign the new employee to a role
+
                 })
-        }
-
-
-            // create this dynamically
-            {
-                type: 'list',
-                message: "What is the employee's role?",
-                choices: allRoles,
-                // choices: [
-                //     'Sales Person',
-                //     'Software Engineer',
-                //     'Account Manager',
-                //     'Accountant',
-                //     'Project Manager',
-                //     'Lawyer'
-                // ],
-                name: 'employeeRole'
-            },
-
-        // create this dynamically
-        // {
-        //     type: 'list',
-        //     message: "Who is the employee's manager?",
-        //     choices: [
-        //         'Nisha Singh',
-        //         'Harpreet Kaur'
-        //     ],
-        //     name: 'employeeManager'
-        // }
-    ]).then(res => {
-                console.log('RES: ', res);
-                db.query(
-                    'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?)', [res.firstName, res.lastName, res.employeeRole, res.employeeManager],
-                )
-            }
-            ).then(() => promptMenu())
+        })
 };
 
 // for updating values
